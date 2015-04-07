@@ -1,17 +1,84 @@
 package jcristobal.frontinvaders_android;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    private ProgressBar progressBar; // Para la barra de proceso
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Botón de salida (final de la aplicación)
+        final Button boton_salida = (Button)findViewById(R.id.exit_button);
+        boton_salida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+        });
+
+
+        // Trabajamos con WebView
+        String URL = "http://jcristobal.github.io/FrontInvaders/";
+        WebView webview;
+        webview = (WebView)findViewById(R.id.webView);
+
+        // Para que sólo se vea en el webview
+        webview.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }});
+
+        webview.getSettings().setJavaScriptEnabled(true);    // Permitimos que se ejecute JavaScript
+        //webview.getSettings().setLoadWithOverviewMode(true); // Ajustamos la vista para que no se vea demasiado grande
+        //webview.getSettings().setUseWideViewPort(true);
+        //webview.getSettings().setBuiltInZoomControls(true);  // habilitamos el zoom
+        webview.setInitialScale(100);
+        webview.loadUrl(URL);
+
+
+        // Para la barra de proceso
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        webview.setWebChromeClient(new WebChromeClient()
+        {
+            @Override
+            public void onProgressChanged(WebView view, int progress)
+            {
+                progressBar.setProgress(0);
+                progressBar.setVisibility(View.VISIBLE);
+                MainActivity.this.setProgress(progress * 1000);
+
+                progressBar.incrementProgressBy(progress);
+
+                if(progress == 100)
+                {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
+
+
     }
 
 
@@ -31,7 +98,10 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            //return true;
+            Intent intent =
+                    new Intent(MainActivity.this, contacto.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
