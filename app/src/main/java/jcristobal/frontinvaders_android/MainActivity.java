@@ -22,19 +22,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Botón de salida (final de la aplicación)
-        final Button boton_salida = (Button)findViewById(R.id.exit_button);
-        boton_salida.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_HOME);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-
-            }
-        });
 
 
         // Trabajamos con WebView
@@ -101,6 +88,13 @@ public class MainActivity extends ActionBarActivity {
             //return true;
             Intent intent =
                     new Intent(MainActivity.this, contacto.class);
+            startActivity(intent);
+        }
+        if (id == R.id.action_exit) {
+            finish();
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
 

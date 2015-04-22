@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FrontInvaders-Android</string>
     <string name="action_settings">JCristobal</string>
+    <string name="action_exit">Salida</string>
     <string name="salida">Salida</string>
     <string name="atras">Atrás</string>
 </resources>
